@@ -1,0 +1,146 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Science Quiz – Murtaza Ki Funkariyan</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .quiz-container {
+      width: 700px;
+      background: #fff;
+      border: 2px solid #333;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    h2 {
+      text-align: center;
+    }
+    .question {
+      margin: 15px 0;
+    }
+    .options label {
+      display: block;
+      margin: 6px 0;
+    }
+    .controls {
+      text-align: center;
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #result {
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container" id="quiz"></div>
+
+  <script>
+    const questions = [
+      {q:"What is the main source of energy for all living things?", options:["Moon","Water","Sun","Soil"], answer:2},
+      {q:"Which of these is a producer?", options:["Lion","Grass","Tiger","Eagle"], answer:1},
+      {q:"In a food chain, what do consumers eat?", options:["Only plants","Only animals","Producers or other consumers","Rocks"], answer:2},
+      {q:"Which animal is a predator?", options:["Cow","Rabbit","Deer","Eagle"], answer:3},
+      {q:"If grass → rabbit → fox is a food chain, what eats the rabbit?", options:["Grass","Fox","Sun","Deer"], answer:1},
+      {q:"What do producers make during photosynthesis?", options:["Oxygen and food","Carbon dioxide and water","Minerals and soil","Heat and energy"], answer:0},
+      {q:"Which of these is a primary consumer?", options:["Goat","Wolf","Snake","Eagle"], answer:0},
+      {q:"Which is a secondary consumer?", options:["Cow","Rabbit","Snake","Grass"], answer:2},
+      {q:"An animal that hunts other animals is called a:", options:["Prey","Producer","Predator","Herbivore"], answer:2},
+      {q:"Which consumer eats both plants and animals?", options:["Omnivore","Carnivore","Herbivore","Producer"], answer:0},
+      {q:"The first stage of a plant’s life cycle is:", options:["Flowering","Germination","Seed","Fruit"], answer:2},
+      {q:"Seeds dispersed by wind are usually:", options:["Heavy and large","Small and light","Brightly colored","Full of juice"], answer:1},
+      {q:"Seeds inside juicy fruits are usually spread by:", options:["Water","Animals","Air","Soil"], answer:1},
+      {q:"When a seed grows into a seedling, the process is called:", options:["Photosynthesis","Pollination","Germination","Dispersal"], answer:2},
+      {q:"Which plant part helps in reproduction?", options:["Leaf","Stem","Flower","Root"], answer:2},
+      {q:"Which part of the seed comes out first during germination?", options:["Stem","Root","Flower","Leaf"], answer:1},
+      {q:"What is needed for germination?", options:["Water, air, warmth","Soil, rocks, sand","Fruits, leaves, flowers","Light, sound, heat"], answer:0},
+      {q:"Which part of the plant makes food?", options:["Stem","Leaf","Root","Flower"], answer:1},
+      {q:"The baby plant inside a seed is called:", options:["Embryo","Root","Fruit","Stem"], answer:0},
+      {q:"A seedling grows into a:", options:["Fruit","Mature plant","Leaf","Flower"], answer:1},
+    ];
+    
+    let currentPage = 0;
+    let userAnswers = [];
+    const quiz = document.getElementById('quiz');
+
+    function renderPage(pageIndex) {
+      const start = pageIndex * 5;
+      const end = start + 5;
+      const pageQuestions = questions.slice(start, end);
+      
+      let html = `<h2>Science Quiz – Murtaza Ki Funkariyan<br>Page ${pageIndex+1}</h2>`;
+      
+      pageQuestions.forEach((q, i) => {
+        html += `<div class="question"><p>${start+i+1}. ${q.q}</p>`;
+        q.options.forEach((opt, j) => {
+          const name = `q${start+i}`;
+          html += `<label><input type="radio" name="${name}" value="${j}"> ${opt}</label>`;
+        });
+        html += `</div>`;
+      });
+
+      html += `<div class="controls">`;
+      if (pageIndex > 0) {
+        html += `<button onclick="prevPage()">Back</button>`;
+      }
+      if (pageIndex < 4) {
+        html += `<button onclick="nextPage()">Next</button>`;
+      } else {
+        html += `<button onclick="finishQuiz()">Submit</button>`;
+      }
+      html += `</div>`;
+      quiz.innerHTML = html;
+    }
+
+    function saveAnswers(pageIndex) {
+      const start = pageIndex * 5;
+      for (let i = 0; i < 5; i++) {
+        const radios = document.getElementsByName(`q${start+i}`);
+        radios.forEach((r, j) => {
+          if (r.checked) userAnswers[start+i] = j;
+        });
+      }
+    }
+
+    function nextPage() {
+      saveAnswers(currentPage);
+      currentPage++;
+      renderPage(currentPage);
+    }
+
+    function prevPage() {
+      saveAnswers(currentPage);
+      currentPage--;
+      renderPage(currentPage);
+    }
+
+    function finishQuiz() {
+      saveAnswers(currentPage);
+      let score = 0;
+      questions.forEach((q, i) => {
+        if (userAnswers[i] === q.answer) score++;
+      });
+      quiz.innerHTML = `<h2>Quiz Finished!</h2><p id="result">You scored ${score} out of ${questions.length}.</p>`;
+    }
+
+    renderPage(currentPage);
+  </script>
+</body>
+</html>
+

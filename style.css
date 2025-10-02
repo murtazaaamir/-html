@@ -28,7 +28,34 @@ body{
 }
 
 .nav-item.active{
-background-color: #4fd1c5;
+background-color:maroon(354 31% 18%);
 color: white;  
 font-weight: bold;  
+}
+.carousel-container {
+
+display: flex;
+
+justify-content: center;
+
+align-items: center;
+
+height: 300px;
+
+/* Adjust based on your image height */
+
+}
+
+/* Hide all slides by default */
+
+.myslides {
+
+display: none;
+
+max-height: 100%;
+
+/* Ensure images fit within container */
+
+max-width: 100%;
+
 }
